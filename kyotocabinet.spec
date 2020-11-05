@@ -4,10 +4,10 @@
 #
 Name     : kyotocabinet
 Version  : 1.2.77
-Release  : 2
+Release  : 3
 URL      : https://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.77.tar.gz
 Source0  : https://fallabs.com/kyotocabinet/pkg/kyotocabinet-1.2.77.tar.gz
-Summary  : a modern implementation of DBM in C++
+Summary  : a straightforward implementation of DBM
 Group    : Development/Tools
 License  : GPL-3.0
 Requires: kyotocabinet-bin = %{version}-%{release}
@@ -35,7 +35,6 @@ Summary: dev components for the kyotocabinet package.
 Group: Development
 Requires: kyotocabinet-lib = %{version}-%{release}
 Requires: kyotocabinet-bin = %{version}-%{release}
-Requires: kyotocabinet-man = %{version}-%{release}
 Provides: kyotocabinet-devel = %{version}-%{release}
 Requires: kyotocabinet = %{version}-%{release}
 
@@ -79,21 +78,27 @@ man components for the kyotocabinet package.
 
 %prep
 %setup -q -n kyotocabinet-1.2.77
+cd %{_builddir}/kyotocabinet-1.2.77
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1551153312
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604541267
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %install
-export SOURCE_DATE_EPOCH=1551153312
+export SOURCE_DATE_EPOCH=1604541267
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/kyotocabinet
-cp COPYING %{buildroot}/usr/share/package-licenses/kyotocabinet/COPYING
+cp %{_builddir}/kyotocabinet-1.2.77/COPYING %{buildroot}/usr/share/package-licenses/kyotocabinet/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 %make_install
 
 %files
@@ -121,7 +126,25 @@ cp COPYING %{buildroot}/usr/share/package-licenses/kyotocabinet/COPYING
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
+/usr/include/kccachedb.h
+/usr/include/kccommon.h
+/usr/include/kccompare.h
+/usr/include/kccompress.h
+/usr/include/kcdb.h
+/usr/include/kcdbext.h
+/usr/include/kcdirdb.h
+/usr/include/kcfile.h
+/usr/include/kchashdb.h
+/usr/include/kclangc.h
+/usr/include/kcmap.h
+/usr/include/kcplantdb.h
+/usr/include/kcpolydb.h
+/usr/include/kcprotodb.h
+/usr/include/kcregex.h
+/usr/include/kcstashdb.h
+/usr/include/kctextdb.h
+/usr/include/kcthread.h
+/usr/include/kcutil.h
 /usr/lib64/libkyotocabinet.so
 /usr/lib64/pkgconfig/kyotocabinet.pc
 
@@ -136,7 +159,7 @@ cp COPYING %{buildroot}/usr/share/package-licenses/kyotocabinet/COPYING
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/kyotocabinet/COPYING
+/usr/share/package-licenses/kyotocabinet/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 
 %files man
 %defattr(0644,root,root,0755)
