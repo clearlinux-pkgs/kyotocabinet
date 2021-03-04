@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Patrick McCarty <patrick.mccarty@intel.com>
+Date: Thu, 4 Mar 2021 22:26:40 +0000
+Subject: [PATCH] Disable -march=native
+
+Signed-off-by: Patrick McCarty <patrick.mccarty@intel.com>
+---
+ configure.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 5fc48cf..9b07598 100644
+--- a/configure.in
++++ b/configure.in
+@@ -215,10 +215,10 @@ fi
+ if test "$enable_opt" != "no"
+ then
+   printf 'checking for CPU optimization availability... '
+-  if printf 'main() {}' | $CC -xc -march=native -o config.tmp - >config.tmp 2>&1
++  if printf 'main() {}' | $CC -xc -o config.tmp - >config.tmp 2>&1
+   then
+-    MYCFLAGS="-march=native $MYCFLAGS"
+-    MYCXXFLAGS="-march=native $MYCXXFLAGS"
++    MYCFLAGS="$MYCFLAGS"
++    MYCXXFLAGS="$MYCXXFLAGS"
+     printf 'yes\n'
+   else
+     printf 'no\n'
